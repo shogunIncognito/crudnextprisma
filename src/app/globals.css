@@ -10,3 +10,8 @@
 body {
   @apply bg-neutral-900 text-neutral-100;
 }
+
+.grid-res {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}

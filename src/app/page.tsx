@@ -1,28 +1,26 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Note } from '@prisma/client'
-import { getNotes } from '@/services/api'
 import NotesForm from '@/components/NotesForm'
+import { useNotesContext } from '@/context/NotesContext'
 
 export default function Home (): JSX.Element {
-  const [notes, setNotes] = useState<Note[]>([])
-
-  useEffect(() => {
-    getNotes()
-      .then(notes => setNotes(notes))
-      .catch(err => console.error(err))
-  }, [])
+  const { notes, handleDelete } = useNotesContext()
 
   return (
-    <main className='flex flex-col m-2 justify-center items-center'>
-      <h2 className='font-bold text-2xl my-5'>Crud Prisma Nextjs</h2>
-      <NotesForm />
-      <section className='flex flex-wrap gap-5 my-10 justify-center'>
+    <main className='m-2'>
+      <div className='flex flex-col items-center'>
+        <h2 className='font-bold text-2xl my-5'>Crud Prisma Nextjs</h2>
+        <NotesForm />
+      </div>
+      <section className='grid-res gap-5 m-10 lg:mx-32'>
         {notes.map(note => (
-          <article className='bg-slate-100 shadow-sky-600 text-black p-4 rounded shadow-md' key={note.id}>
+          <article className='flex w-full flex-col gap-2 bg-slate-100 shadow-sky-600 text-black p-4 rounded shadow-md' key={note.id}>
             <h3><b>{note.title}</b></h3>
             <p>{note.content}</p>
+            <div className='flex gap-2 mt-3'>
+              <button>Edit</button>
+              <button onClick={() => handleDelete(note.id)} className='hover:text-red-500'>Delete</button>
+            </div>
           </article>
         ))}
       </section>
